@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Head from 'next/head';
 import Header from '../components/Header';
 import AdminView from '../components/AdminView';
 import Meeting1View from '../components/Meeting1View';
 import Meeting2View from '../components/Meeting2View';
 import TerminesView from '../components/TerminesView';
+import PrintModal from '../components/PrintModal';
 import { usePrefs } from '../hooks/usePrefs';
 import { useBoard } from '../hooks/useBoard';
 
@@ -15,10 +16,30 @@ const TABS = [
   { key: '3', label: 'PROJETS TERMINES' },
 ];
 
+const SHEET_TITLES = {
+  admin: 'Admin projets', '1': 'Suivi projets', '2': 'Meeting 2 - Attribution', '3': 'Projets termines',
+};
+
+function renderSheet(key, board, theme) {
+  if (key === 'admin') return <AdminView board={board} editable={false} />;
+  if (key === '1') return <Meeting1View board={board} editable={false} theme={theme} />;
+  if (key === '2') return <Meeting2View board={board} editable={false} theme={theme} />;
+  if (key === '3') return <TerminesView board={board} editable={false} theme={theme} />;
+  return null;
+}
+
 export default function Home() {
   const { prefs, update, ready } = usePrefs();
   const board = useBoard();
   const [tab, setTab] = useState('1');
+  const [printOpen, setPrintOpen] = useState(false);
+  const [printSelection, setPrintSelection] = useState(null);
+
+  useEffect(() => {
+    function onAfterPrint() { setPrintSelection(null); }
+    window.addEventListener('afterprint', onAfterPrint);
+    return () => window.removeEventListener('afterprint', onAfterPrint);
+  }, []);
 
   if (!ready || board.loading) {
     return <div style={{ padding: 40, fontFamily: 'Segoe UI, Arial, sans-serif' }}>Chargement...</div>;
@@ -31,8 +52,12 @@ export default function Home() {
       <Head>
         <title>Planification Hebdomadaire - PEP2000</title>
       </Head>
-      <Header prefs={prefs} updatePrefs={update} />
-      <div className="wrap">
+
+      <div className="no-print">
+        <Header prefs={prefs} updatePrefs={update} />
+      </div>
+
+      <div className="wrap no-print">
         <div className="toolbar">
           <div className="left">
             <span className="eyebrow">Vue</span>
@@ -45,6 +70,7 @@ export default function Home() {
             </div>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+            <button className="btn ghost small" onClick={() => setPrintOpen(true)}>&#128438; Imprimer</button>
             <div style={{ display: 'flex', gap: 6 }}>
               <button className="btn ghost small" disabled={!board.canUndo} onClick={board.undo} title="Annuler">&#8630; Annuler</button>
               <button className="btn ghost small" disabled={!board.canRedo} onClick={board.redo} title="Retablir">&#8631; Retablir</button>
@@ -66,6 +92,31 @@ export default function Home() {
           Mode participant en lecture seule. Aucun compte requis pour l&apos;instant &mdash; usage interne d&apos;equipe
           (voir le README pour ajouter une vraie authentification plus tard).
         </div>
+      </div>
+
+      {printSelection && (
+        <div className="print-only">
+          {printSelection.map((key) => (
+            <div className="print-page" key={key}>
+              <div className="wrap">
+                <h1 style={{ fontSize: 20, marginBottom: 10 }}>{SHEET_TITLES[key]}</h1>
+                {renderSheet(key, board, prefs.theme)}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      <div className="no-print">
+        <PrintModal
+          open={printOpen}
+          onCancel={() => setPrintOpen(false)}
+          onPrint={(selection) => {
+            setPrintOpen(false);
+            setPrintSelection(selection);
+            setTimeout(() => window.print(), 200);
+          }}
+        />
       </div>
     </>
   );

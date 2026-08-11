@@ -197,6 +197,21 @@ html[data-theme='nuit'] .st-termine .d { background: #9AA0AC; }
 .needs-modal-head { display: flex; justify-content: space-between; align-items: center; }
 .needs-modal-head strong { font-size: 15px; color: var(--ink); }
 
+/* ---------- Impression ---------- */
+.print-only { display: none; }
+@media print {
+  html[data-theme] { --page: #FFFFFF; --panel: #FFFFFF; --ink: #000000; --ink-dim: #444444; --line: #CCCCCC; }
+  body { background: #fff; }
+  .no-print { display: none !important; }
+  .print-only { display: block !important; }
+  .needs-fab { display: none !important; }
+  .print-page { page-break-after: always; padding: 10px 0; }
+  .print-page:last-child { page-break-after: auto; }
+  .panel { border: none; box-shadow: none; }
+  .scrollx { overflow: visible !important; border: none; }
+  select, input, textarea { border: none !important; background: none !important; }
+}
+
 /* ---------- Cellulaire portrait : tableau plus compact ---------- */
 @media (max-width: 640px) and (orientation: portrait) {
   .projtable { font-size: 11px; }
