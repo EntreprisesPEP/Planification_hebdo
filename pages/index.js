@@ -122,6 +122,10 @@ export default function Home() {
               <div className="wrap">
                 <PrintHeader title={SHEET_TITLES[key]} subtitle={sheetSubtitle(key, board)} />
                 {renderSheet(key, board, prefs.theme)}
+                <div className="print-footer">
+                  <span>Les Entreprises PEP2000</span>
+                  <span>Genere le {fmtDateLong(new Date())}</span>
+                </div>
               </div>
             </div>
           ))}
