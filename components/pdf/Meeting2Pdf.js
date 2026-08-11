@@ -16,8 +16,8 @@ function WeekTable({ label, dates, contremaitres, getAssignment, activeProjects,
   return (
     <View style={{ marginBottom: 12, marginTop: topGap || 0 }}>
       <View style={{ flexDirection: 'row', alignItems: 'baseline', gap: 10, marginBottom: 6 }}>
-        <Text style={{ fontSize: 28, fontFamily: 'Helvetica-Bold', color: NAVY }}>{label}</Text>
-        <Text style={{ fontSize: 11, color: '#6B7280' }}>- {fmtDateLong(dates[0])} au {fmtDateLong(dates[6])}</Text>
+        <Text style={{ fontSize: 14, fontFamily: 'Helvetica-Bold', color: NAVY }}>{label}</Text>
+        <Text style={{ fontSize: 8, color: '#6B7280' }}>- {fmtDateLong(dates[0])} au {fmtDateLong(dates[6])}</Text>
       </View>
       <View style={[pdfStyles.table, { borderColor: LINE }]}>
         <View style={pdfStyles.row}>
