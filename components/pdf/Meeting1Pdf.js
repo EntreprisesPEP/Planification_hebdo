@@ -1,7 +1,7 @@
 import { Page, View, Text } from '@react-pdf/renderer';
 import { pdfStyles } from '../../lib/pdfStyles';
 import { statusColor } from '../../lib/statusColors';
-import { formatDateFr, mondayOf, fmtDateLong } from '../../lib/dates';
+import { formatDateFr, fmtDateLong } from '../../lib/dates';
 import { PdfHeader, PdfFooter } from './PdfChrome';
 
 const COLS = [16, 12, 40, 6, 6, 10, 10]; // No/Projet, Statut, Commentaire, Sem1, Sem2, Charge, Surintendant
@@ -13,9 +13,7 @@ function statutLabel(p) {
 
 export default function Meeting1Pdf({ board }) {
   const active = board.projects.filter((p) => p.statut !== 'Termine');
-  const start = mondayOf(new Date((board.settings.notes_week_start || '') + 'T00:00:00'));
-  const end = new Date(start); end.setDate(end.getDate() + 6);
-  const subtitle = `Semaine du ${fmtDateLong(start)} au ${fmtDateLong(end)}`;
+  const subtitle = fmtDateLong(new Date());
 
   return (
     <Page size={[792, 1224]} style={pdfStyles.page}>

@@ -8,6 +8,7 @@ import TerminesView from '../components/TerminesView';
 import PrintModal from '../components/PrintModal';
 import { usePrefs } from '../hooks/usePrefs';
 import { useBoard } from '../hooks/useBoard';
+import { mondayOf, today, dateKey } from '../lib/dates';
 
 const TABS = [
   { key: 'admin', label: 'ADMIN PROJETS' },
@@ -38,7 +39,10 @@ export default function Home() {
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `planification-hebdomadaire-${new Date().toISOString().slice(0, 10)}.pdf`;
+      const currentWeekMonday = mondayOf(new Date((board.settings.notes_week_start || dateKey(today())) + 'T00:00:00'));
+      const nextMonday = new Date(currentWeekMonday);
+      nextMonday.setDate(nextMonday.getDate() + 7);
+      a.download = `Planification Hebdomadaire - ${dateKey(nextMonday)}.pdf`;
       document.body.appendChild(a);
       a.click();
       a.remove();
