@@ -168,17 +168,33 @@ html[data-theme='nuit'] .st-termine .d { background: #9AA0AC; }
 .need-item .sw { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
 .need-item .wk { font-size: 10px; font-weight: 700; opacity: .75; }
 
-.needs-sidebar { display: flex; gap: 10px; flex-shrink: 0; width: 260px; }
+.needs-sidebar { display: flex; gap: 10px; flex-shrink: 0; }
 .needs-col { flex: 1; background: var(--panel-2); border: 1px solid var(--line); border-radius: 8px; padding: 10px; min-width: 0; }
 .needs-col-title { font-size: 10px; text-transform: uppercase; letter-spacing: .06em; font-weight: 700; color: var(--ink-dim); margin-bottom: 8px; }
-.needs-item { display: flex; align-items: flex-start; gap: 6px; font-size: 12px; color: var(--ink); margin-bottom: 7px; line-height: 1.35; }
+.needs-item { display: flex; align-items: flex-start; gap: 6px; font-size: 12px; color: var(--ink); margin-bottom: 7px; line-height: 1.35; border-radius: 6px; padding: 4px 6px; }
 .needs-item .sw { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 3px; }
 .needs-empty { font-size: 11.5px; color: var(--ink-dim); }
+.needs-clickable { cursor: pointer; }
+.needs-clickable:hover { background: var(--line); }
+.needs-placed { color: #2E9F58; text-decoration: line-through; opacity: .8; }
 
-@media (max-width: 640px) {
-  .needs-and-grid { flex-direction: column; }
-  .needs-sidebar { width: 100%; }
+.needs-fab {
+  position: fixed; bottom: 22px; right: 22px; z-index: 500;
+  background: var(--red); color: #fff; border: none; border-radius: 30px;
+  padding: 12px 20px; font-weight: 700; font-size: 13px; cursor: pointer;
+  box-shadow: 0 6px 18px rgba(0,0,0,.25); display: flex; align-items: center; gap: 8px;
 }
+.needs-fab:hover { background: var(--red-dark); }
+.needs-fab-badge {
+  background: #fff; color: var(--red); border-radius: 12px; min-width: 20px; height: 20px;
+  display: flex; align-items: center; justify-content: center; font-size: 11px; padding: 0 5px;
+}
+.needs-modal {
+  background: var(--panel); border-radius: 12px; padding: 20px; width: 420px; max-width: 90vw;
+  box-shadow: 0 16px 40px rgba(0,0,0,.3);
+}
+.needs-modal-head { display: flex; justify-content: space-between; align-items: center; }
+.needs-modal-head strong { font-size: 15px; color: var(--ink); }
 
 /* ---------- Cellulaire portrait : tableau plus compact ---------- */
 @media (max-width: 640px) and (orientation: portrait) {

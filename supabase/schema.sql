@@ -19,6 +19,8 @@ create table if not exists planif_hebdo.projects (
   statut text not null default 'A venir',
   s1 boolean not null default false,
   s2 boolean not null default false,
+  s1_placed boolean not null default false,
+  s2_placed boolean not null default false,
   commentaire text default '',
   date_valeur date,
   sort_order integer not null default 0,
