@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import StatusCell from './StatusCell';
 import FilterDropdown from './FilterDropdown';
 import CommentBadge from './CommentBadge';
+import ProjectCard from './ProjectCard';
 import { statusColor } from '../lib/statusColors';
 
 function AutoTextarea({ value, editable, onChange }) {
@@ -18,7 +19,7 @@ function AutoTextarea({ value, editable, onChange }) {
 export default function ProjectsTable({ rows, editable, theme, onUpdate, board, emptyLabel }) {
   const [sortField, setSortField] = useState(null);
   const [sortDir, setSortDir] = useState('asc');
-  const [filterCharge, setFilterCharge] = useState(null); // null = tous, array = selection
+  const [filterCharge, setFilterCharge] = useState(null);
   const [filterSurint, setFilterSurint] = useState(null);
 
   const chargeOptions = useMemo(() => [...new Set(rows.map((r) => r.charge).filter(Boolean))].sort(), [rows]);
@@ -41,88 +42,121 @@ export default function ProjectsTable({ rows, editable, theme, onUpdate, board, 
   }
 
   return (
-    <div className="scrollx">
-      <table className="projtable">
-        <colgroup>
-          <col style={{ width: '15%' }} /><col style={{ width: '14%' }} /><col style={{ width: '35%' }} />
-          <col style={{ width: '6%' }} /><col style={{ width: '6%' }} /><col style={{ width: '9%' }} />
-          <col style={{ width: '10%' }} /><col style={{ width: '5%' }} />
-        </colgroup>
-        <thead>
-          <tr>
-            <th>No / Projet</th>
-            <th>Statut</th>
-            <th>Commentaire</th>
-            <th style={{ textAlign: 'right' }}>Sem 1</th>
-            <th style={{ textAlign: 'right' }}>Sem 2</th>
-            <th>
-              Charge
-              <FilterDropdown
-                label="charge de projet"
-                options={chargeOptions}
-                value={filterCharge}
-                onSort={(dir) => sortBy('charge', dir)}
-                onFilter={setFilterCharge}
-              />
-            </th>
-            <th>
-              Surintendant
-              <FilterDropdown
-                label="surintendant"
-                options={surintOptions}
-                value={filterSurint}
-                onSort={(dir) => sortBy('surintendant', dir)}
-                onFilter={setFilterSurint}
-              />
-            </th>
-            <th />
-          </tr>
-        </thead>
-        <tbody>
-          {visible.length === 0 && <tr><td colSpan={8} className="empty">{emptyLabel || 'Aucun projet.'}</td></tr>}
-          {visible.map((p) => {
-            const col = statusColor(p.statut, theme);
-            const projComments = board.commentsFor(p.id);
-            return (
-              <tr key={p.id} style={col ? { background: col.bg } : undefined}>
-                <td>
-                  <span className="jobline" title={`${p.no} ${p.projet}`}>
-                    <span className="no">{p.no}</span>{p.projet}
-                  </span>
-                </td>
-                <td>
-                  <StatusCell project={p} editable={editable} onChange={(patch) => onUpdate(p.id, patch)} />
-                </td>
-                <td>
-                  <AutoTextarea value={p.commentaire} editable={editable} onChange={(v) => onUpdate(p.id, { commentaire: v })} />
-                </td>
-                <td style={{ textAlign: 'right' }}>
-                  <span
-                    className={`need-chip ${p.s1 ? 'need-yes' : 'need-no'} ${editable ? '' : 'readonly'}`}
-                    onClick={() => editable && onUpdate(p.id, { s1: !p.s1 })}
-                  >{p.s1 ? 'OUI' : 'NON'}</span>
-                </td>
-                <td style={{ textAlign: 'right' }}>
-                  <span
-                    className={`need-chip ${p.s2 ? 'need-yes' : 'need-no'} ${editable ? '' : 'readonly'}`}
-                    onClick={() => editable && onUpdate(p.id, { s2: !p.s2 })}
-                  >{p.s2 ? 'OUI' : 'NON'}</span>
-                </td>
-                <td>{p.charge}</td>
-                <td>{p.surintendant}</td>
-                <td style={{ textAlign: 'center' }}>
-                  <CommentBadge
-                    project={p}
-                    comments={projComments}
-                    onAdd={(body, author) => board.addComment(p.id, body, author)}
-                    onDelete={(id) => board.deleteComment(id)}
-                  />
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+    <div>
+      {/* ---------- Vue tableau (ordinateur / iPad) ---------- */}
+      <div className="scrollx desktop-table">
+        <table className="projtable">
+          <colgroup>
+            <col style={{ width: '15%' }} /><col style={{ width: '14%' }} /><col style={{ width: '35%' }} />
+            <col style={{ width: '6%' }} /><col style={{ width: '6%' }} /><col style={{ width: '9%' }} />
+            <col style={{ width: '10%' }} /><col style={{ width: '5%' }} />
+          </colgroup>
+          <thead>
+            <tr>
+              <th>No / Projet</th>
+              <th>Statut</th>
+              <th>Commentaire</th>
+              <th style={{ textAlign: 'right' }}>Sem 1</th>
+              <th style={{ textAlign: 'right' }}>Sem 2</th>
+              <th>
+                Charge
+                <FilterDropdown
+                  label="charge de projet"
+                  options={chargeOptions}
+                  value={filterCharge}
+                  onSort={(dir) => sortBy('charge', dir)}
+                  onFilter={setFilterCharge}
+                />
+              </th>
+              <th>
+                Surintendant
+                <FilterDropdown
+                  label="surintendant"
+                  options={surintOptions}
+                  value={filterSurint}
+                  onSort={(dir) => sortBy('surintendant', dir)}
+                  onFilter={setFilterSurint}
+                />
+              </th>
+              <th />
+            </tr>
+          </thead>
+          <tbody>
+            {visible.length === 0 && <tr><td colSpan={8} className="empty">{emptyLabel || 'Aucun projet.'}</td></tr>}
+            {visible.map((p) => {
+              const col = statusColor(p.statut, theme);
+              const projComments = board.commentsFor(p.id);
+              return (
+                <tr key={p.id} style={col ? { background: col.bg } : undefined}>
+                  <td>
+                    <span className="jobline" title={`${p.no} ${p.projet}`}>
+                      <span className="no">{p.no}</span>{p.projet}
+                    </span>
+                  </td>
+                  <td>
+                    <StatusCell project={p} editable={editable} onChange={(patch) => onUpdate(p.id, patch)} />
+                  </td>
+                  <td>
+                    <AutoTextarea value={p.commentaire} editable={editable} onChange={(v) => onUpdate(p.id, { commentaire: v })} />
+                  </td>
+                  <td style={{ textAlign: 'right' }}>
+                    <span
+                      className={`need-chip ${p.s1 ? 'need-yes' : 'need-no'} ${editable ? '' : 'readonly'}`}
+                      onClick={() => editable && onUpdate(p.id, { s1: !p.s1 })}
+                    >{p.s1 ? 'OUI' : 'NON'}</span>
+                  </td>
+                  <td style={{ textAlign: 'right' }}>
+                    <span
+                      className={`need-chip ${p.s2 ? 'need-yes' : 'need-no'} ${editable ? '' : 'readonly'}`}
+                      onClick={() => editable && onUpdate(p.id, { s2: !p.s2 })}
+                    >{p.s2 ? 'OUI' : 'NON'}</span>
+                  </td>
+                  <td>{p.charge}</td>
+                  <td>{p.surintendant}</td>
+                  <td style={{ textAlign: 'center' }}>
+                    <CommentBadge
+                      project={p}
+                      comments={projComments}
+                      onAdd={(body, author) => board.addComment(p.id, body, author)}
+                      onDelete={(id) => board.deleteComment(id)}
+                    />
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+
+      {/* ---------- Vue cartes (cellulaire) ---------- */}
+      <div className="mobile-cards">
+        <div className="mobile-filters">
+          <span>
+            Charge
+            <FilterDropdown
+              label="charge de projet"
+              options={chargeOptions}
+              value={filterCharge}
+              onSort={(dir) => sortBy('charge', dir)}
+              onFilter={setFilterCharge}
+            />
+          </span>
+          <span>
+            Surintendant
+            <FilterDropdown
+              label="surintendant"
+              options={surintOptions}
+              value={filterSurint}
+              onSort={(dir) => sortBy('surintendant', dir)}
+              onFilter={setFilterSurint}
+            />
+          </span>
+        </div>
+        {visible.length === 0 && <div className="empty">{emptyLabel || 'Aucun projet.'}</div>}
+        {visible.map((p) => (
+          <ProjectCard key={p.id} project={p} editable={editable} theme={theme} onUpdate={onUpdate} board={board} />
+        ))}
+      </div>
     </div>
   );
 }
