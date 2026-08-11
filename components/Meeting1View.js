@@ -14,7 +14,7 @@ export default function Meeting1View({ board, editable, theme }) {
   return (
     <div className="panel">
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: 10 }}>
-        <h2 className="big-title">SUIVI PROJETS</h2>
+        <h2 className="big-title">MEETING 1 - SUIVI PROJETS</h2>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8, alignItems: 'flex-end' }}>
           <div className="weeknav">
             <span>{fmtDateLong(weekStart)} - {fmtDateLong(weekEnd)}</span>

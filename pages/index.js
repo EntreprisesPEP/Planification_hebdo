@@ -11,13 +11,13 @@ import { useBoard } from '../hooks/useBoard';
 
 const TABS = [
   { key: 'admin', label: 'ADMIN PROJETS' },
-  { key: '1', label: 'SUIVI PROJETS' },
+  { key: '1', label: 'MEETING 1 - SUIVI PROJETS' },
   { key: '2', label: 'MEETING 2 - ATTRIBUTION' },
   { key: '3', label: 'PROJETS TERMINES' },
 ];
 
 const SHEET_TITLES = {
-  admin: 'Admin projets', '1': 'Suivi projets', '2': 'Meeting 2 - Attribution', '3': 'Projets termines',
+  admin: 'Admin projets', '1': 'Meeting 1 - Suivi projets', '2': 'Meeting 2 - Attribution', '3': 'Projets termines',
 };
 
 function renderSheet(key, board, theme) {

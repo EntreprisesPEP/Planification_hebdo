@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 const SHEETS = [
   { key: 'admin', label: 'Admin projets' },
-  { key: '1', label: 'Suivi projets' },
+  { key: '1', label: 'Meeting 1 - Suivi projets' },
   { key: '2', label: 'Meeting 2 - Attribution' },
   { key: '3', label: 'Projets termines' },
 ];
