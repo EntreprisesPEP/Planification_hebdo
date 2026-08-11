@@ -1,4 +1,4 @@
-import { dayCellPalette } from '../lib/statusColors';
+import { dayCellPalette, statusColor } from '../lib/statusColors';
 import { JOURS, dateKey, mondayOf, today, weekDates, fmtDateLong } from '../lib/dates';
 
 export default function Meeting2View({ board, editable, theme }) {
@@ -31,7 +31,41 @@ export default function Meeting2View({ board, editable, theme }) {
         </div>
       </div>
 
-      <div className="scrollx">
+      <div className="needs-and-grid" style={{ display: 'flex', gap: 16, alignItems: 'flex-start' }}>
+        <div className="needs-sidebar">
+          <div className="needs-col">
+            <div className="needs-col-title">Sem 1</div>
+            {activeProjects.filter((p) => p.s1).length === 0 && (
+              <div className="needs-empty">Aucun besoin</div>
+            )}
+            {activeProjects.filter((p) => p.s1).map((p) => {
+              const col = statusColor(p.statut, theme);
+              return (
+                <div className="needs-item" key={p.id}>
+                  <span className="sw" style={{ background: col ? col.border : 'var(--ink-dim)' }} />
+                  <span>{p.no} - {p.projet}</span>
+                </div>
+              );
+            })}
+          </div>
+          <div className="needs-col">
+            <div className="needs-col-title">Sem 2</div>
+            {activeProjects.filter((p) => p.s2).length === 0 && (
+              <div className="needs-empty">Aucun besoin</div>
+            )}
+            {activeProjects.filter((p) => p.s2).map((p) => {
+              const col = statusColor(p.statut, theme);
+              return (
+                <div className="needs-item" key={p.id}>
+                  <span className="sw" style={{ background: col ? col.border : 'var(--ink-dim)' }} />
+                  <span>{p.no} - {p.projet}</span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        <div className="scrollx" style={{ flex: 1 }}>
         <table id="cmTable">
           <thead>
             <tr>
@@ -82,6 +116,7 @@ export default function Meeting2View({ board, editable, theme }) {
             ))}
           </tbody>
         </table>
+      </div>
       </div>
     </div>
   );

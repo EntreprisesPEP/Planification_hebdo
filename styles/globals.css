@@ -125,6 +125,7 @@ html[data-theme='nuit'] .st-termine .d { background: #9AA0AC; }
 .statut-inline { display: flex; align-items: center; gap: 5px; min-width: 0; position: relative; }
 .date-field-wrap { position: relative; flex: 1; min-width: 0; }
 .hidden-date-input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; margin: 0; padding: 0; border: none; cursor: pointer; }
+.hidden-date-input::-webkit-calendar-picker-indicator { position: absolute; left: 0; top: 0; width: 100%; height: 100%; margin: 0; padding: 0; opacity: 0; cursor: pointer; }
 .date-display-visual {
   background: var(--input-bg); border: 1px solid var(--line); border-radius: 6px; padding: 6px 7px; font-size: 12.5px;
   color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; pointer-events: none;
@@ -166,6 +167,18 @@ html[data-theme='nuit'] .st-termine .d { background: #9AA0AC; }
 .need-item { display: flex; align-items: center; gap: 7px; padding: 6px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; border: 1px solid var(--line); }
 .need-item .sw { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
 .need-item .wk { font-size: 10px; font-weight: 700; opacity: .75; }
+
+.needs-sidebar { display: flex; gap: 10px; flex-shrink: 0; width: 260px; }
+.needs-col { flex: 1; background: var(--panel-2); border: 1px solid var(--line); border-radius: 8px; padding: 10px; min-width: 0; }
+.needs-col-title { font-size: 10px; text-transform: uppercase; letter-spacing: .06em; font-weight: 700; color: var(--ink-dim); margin-bottom: 8px; }
+.needs-item { display: flex; align-items: flex-start; gap: 6px; font-size: 12px; color: var(--ink); margin-bottom: 7px; line-height: 1.35; }
+.needs-item .sw { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 3px; }
+.needs-empty { font-size: 11.5px; color: var(--ink-dim); }
+
+@media (max-width: 640px) {
+  .needs-and-grid { flex-direction: column; }
+  .needs-sidebar { width: 100%; }
+}
 
 /* ---------- Cellulaire portrait : tableau plus compact ---------- */
 @media (max-width: 640px) and (orientation: portrait) {

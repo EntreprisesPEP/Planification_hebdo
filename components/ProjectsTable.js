@@ -1,13 +1,24 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import StatusCell from './StatusCell';
 import FilterDropdown from './FilterDropdown';
 import CommentBadge from './CommentBadge';
 import { statusColor } from '../lib/statusColors';
 
 function AutoTextarea({ value, editable, onChange }) {
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    if (el.value !== (value || '')) el.value = value || '';
+    el.style.height = '32px';
+    el.style.height = Math.max(32, el.scrollHeight) + 'px';
+  }, [value]);
+
   if (!editable) return <span>{value || ''}</span>;
   return (
     <textarea
+      ref={ref}
       defaultValue={value || ''}
       onInput={(e) => { e.target.style.height = '32px'; e.target.style.height = Math.max(32, e.target.scrollHeight) + 'px'; }}
       onBlur={(e) => e.target.value !== (value || '') && onChange(e.target.value)}
