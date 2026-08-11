@@ -197,51 +197,6 @@ html[data-theme='nuit'] .st-termine .d { background: #9AA0AC; }
 .needs-modal-head { display: flex; justify-content: space-between; align-items: center; }
 .needs-modal-head strong { font-size: 15px; color: var(--ink); }
 
-/* ---------- Impression ---------- */
-.print-only { display: none; }
-@media print {
-  @page portraitPage { size: 11in 17in; margin: 0.2in; }
-  @page landscapePage { size: 17in 11in; margin: 0.2in; }
-  .print-page-portrait { page: portraitPage; }
-  .print-page-landscape { page: landscapePage; }
-
-  html[data-theme] { --page: #FFFFFF; --panel: #FFFFFF; --ink: #000000; --ink-dim: #444444; --line: #CCCCCC; }
-  body { background: #fff; }
-  .no-print { display: none !important; }
-  .print-only { display: block !important; }
-  .needs-fab { display: none !important; }
-  .print-page { page-break-after: always; break-after: page; padding: 0; }
-  .print-page:last-child { page-break-after: auto; break-after: auto; }
-  .print-page .wrap { max-width: none; width: 100%; padding: 0 4px; }
-  .panel { border: none; box-shadow: none; padding: 2px; margin-bottom: 0; }
-  .panel h2.big-title { font-size: 18px; margin: 0 0 6px; }
-  .scrollx { overflow: visible !important; border: none; }
-  select, input, textarea { border: none !important; background: none !important; }
-
-  /* L'en-tete navy garde ses vraies couleurs, meme si le reste passe en noir/blanc */
-  .print-header, .print-header * { color: #fff !important; }
-
-  /* Petit pied de page imprime par le site lui-meme, pas par le navigateur */
-  .print-footer {
-    display: flex !important; justify-content: space-between; font-size: 7.5px; color: #888;
-    border-top: 1px solid #ddd; padding-top: 4px; margin-top: 8px;
-  }
-
-  /* Tout compacter pour tenir sur une seule page tabloid */
-  .print-page table { width: 100%; font-size: 8px; }
-  .print-page th { font-size: 7px; padding: 2px 3px; }
-  .print-page td { padding: 2px 3px; font-size: 8px; }
-  .print-page .jobline { font-size: 8px; white-space: nowrap; }
-  .print-page textarea, .print-page span { font-size: 8px; }
-  .print-page .need-chip { min-width: 20px; height: 14px; font-size: 7px; padding: 0 2px; }
-  .print-page .footnote { display: none; }
-
-  /* Meeting 2 avec 2 semaines (14 colonnes) : encore plus compact */
-  .print-two-weeks { font-size: 7px; }
-  .print-two-weeks th, .print-two-weeks td { padding: 1px 2px; }
-}
-.print-footer { display: none; }
-
 /* ---------- Cellulaire portrait : tableau plus compact ---------- */
 @media (max-width: 640px) and (orientation: portrait) {
   .projtable { font-size: 11px; }
