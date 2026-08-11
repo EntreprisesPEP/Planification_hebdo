@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 const KEY = 'pep-planif-prefs-v1';
 const DEFAULTS = {
   theme: 'jour',
-  role: 'edit',
+  role: 'view',
   sortField1: null, sortDir1: 'asc',
   sortField3: null, sortDir3: 'asc',
   filters: { charge: null, surintendant: null },
