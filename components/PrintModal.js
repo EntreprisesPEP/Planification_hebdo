@@ -29,9 +29,11 @@ export default function PrintModal({ open, onCancel, onPrint }) {
           </label>
         ))}
         <p style={{ fontSize: 11, color: 'var(--ink-dim)', marginTop: 10 }}>
-          Chaque feuille selectionnee sort sur sa propre page. La boite d&apos;impression du
-          navigateur s&apos;ouvre ensuite &mdash; choisis &laquo;Microsoft Print to PDF&raquo; (ou
-          equivalent) pour obtenir un PDF, ou une vraie imprimante.
+          Format 11x17 (tabloid) paysage, pense a tenir sur une seule page par feuille.
+          La boite d&apos;impression du navigateur s&apos;ouvre ensuite &mdash; verifie que le
+          format de papier est bien 11x17/Tabloid (Chrome le pre-selectionne
+          normalement), puis choisis &laquo;Microsoft Print to PDF&raquo; pour un PDF,
+          ou une imprimante qui accepte ce format de papier.
         </p>
         <div className="confirm-actions">
           <button className="btn ghost" onClick={onCancel}>Annuler</button>

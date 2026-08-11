@@ -6,8 +6,10 @@ import Meeting1View from '../components/Meeting1View';
 import Meeting2View from '../components/Meeting2View';
 import TerminesView from '../components/TerminesView';
 import PrintModal from '../components/PrintModal';
+import PrintHeader from '../components/PrintHeader';
 import { usePrefs } from '../hooks/usePrefs';
 import { useBoard } from '../hooks/useBoard';
+import { mondayOf, fmtDateLong, twoWeekDates } from '../lib/dates';
 
 const TABS = [
   { key: 'admin', label: 'ADMIN PROJETS' },
@@ -20,10 +22,26 @@ const SHEET_TITLES = {
   admin: 'Admin projets', '1': 'Meeting 1 - Suivi projets', '2': 'Meeting 2 - Attribution', '3': 'Projets termines',
 };
 
+// Meeting 1 (beaucoup de lignes) -> portrait. Meeting 2 (beaucoup de colonnes) -> paysage.
+const SHEET_ORIENTATION = { admin: 'portrait', '1': 'portrait', '2': 'landscape', '3': 'portrait' };
+
+function sheetSubtitle(key, board) {
+  if (key === '1') {
+    const start = mondayOf(new Date((board.settings.notes_week_start || '') + 'T00:00:00'));
+    const end = new Date(start); end.setDate(end.getDate() + 6);
+    return `Semaine du ${fmtDateLong(start)} au ${fmtDateLong(end)}`;
+  }
+  if (key === '2') {
+    const two = twoWeekDates(board.settings.range_start);
+    return `Semaine 1 : ${fmtDateLong(two[0])} - ${fmtDateLong(two[6])}   |   Semaine 2 : ${fmtDateLong(two[7])} - ${fmtDateLong(two[13])}`;
+  }
+  return null;
+}
+
 function renderSheet(key, board, theme) {
   if (key === 'admin') return <AdminView board={board} editable={false} />;
   if (key === '1') return <Meeting1View board={board} editable={false} theme={theme} />;
-  if (key === '2') return <Meeting2View board={board} editable={false} theme={theme} />;
+  if (key === '2') return <Meeting2View board={board} editable={false} theme={theme} printMode />;
   if (key === '3') return <TerminesView board={board} editable={false} theme={theme} />;
   return null;
 }
@@ -97,9 +115,12 @@ export default function Home() {
       {printSelection && (
         <div className="print-only">
           {printSelection.map((key) => (
-            <div className="print-page" key={key}>
+            <div
+              className={`print-page ${SHEET_ORIENTATION[key] === 'landscape' ? 'print-page-landscape' : 'print-page-portrait'}`}
+              key={key}
+            >
               <div className="wrap">
-                <h1 style={{ fontSize: 20, marginBottom: 10 }}>{SHEET_TITLES[key]}</h1>
+                <PrintHeader title={SHEET_TITLES[key]} subtitle={sheetSubtitle(key, board)} />
                 {renderSheet(key, board, prefs.theme)}
               </div>
             </div>
