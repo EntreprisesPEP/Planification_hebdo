@@ -15,7 +15,7 @@ export default function CommentBadge({ project, comments, onAdd, onDelete }) {
   const [pos, setPos] = useState({ top: 0, left: 0 });
 
   useEffect(() => {
-    try { setAuthor(window.localStorage.getItem('pep-planif-author') || ''); } catch (e) { /* ignore */ }
+    if (open) setAuthor('');
   }, [open]);
 
   useEffect(() => {
@@ -97,7 +97,6 @@ export default function CommentBadge({ project, comments, onAdd, onDelete }) {
               className="btn small"
               onClick={async () => {
                 if (!text.trim()) return;
-                try { window.localStorage.setItem('pep-planif-author', author); } catch (e) { /* ignore */ }
                 await onAdd(text.trim(), author.trim());
                 setText('');
               }}

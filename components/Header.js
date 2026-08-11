@@ -1,11 +1,19 @@
+import { useState } from 'react';
+import PasswordModal from './PasswordModal';
+
 export default function Header({ prefs, updatePrefs }) {
-  async function toggleRole() {
+  const [pwdOpen, setPwdOpen] = useState(false);
+
+  function toggleRole() {
     if (prefs.role === 'edit') {
       updatePrefs({ role: 'view' }); // repasser en participant ne demande jamais de mot de passe
       return;
     }
-    const pwd = window.prompt('Mot de passe animateur :');
-    if (pwd === null) return; // annule
+    setPwdOpen(true);
+  }
+
+  async function submitPassword(pwd) {
+    setPwdOpen(false);
     try {
       const res = await fetch('/api/check-password', {
         method: 'POST',
@@ -55,6 +63,12 @@ export default function Header({ prefs, updatePrefs }) {
           </div>
         </div>
       </div>
+
+      <PasswordModal
+        open={pwdOpen}
+        onSubmit={submitPassword}
+        onCancel={() => setPwdOpen(false)}
+      />
     </>
   );
 }

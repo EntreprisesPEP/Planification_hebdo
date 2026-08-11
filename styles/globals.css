@@ -76,7 +76,7 @@ tbody td { padding: 8px 10px; border-bottom: 1px solid var(--line); font-size: 1
 tbody tr:last-child td { border-bottom: none; }
 .scrollx { overflow-x: auto; border-radius: 8px; border: 1px solid var(--line); }
 .projtable { table-layout: fixed; }
-.jobline { font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; }
+.jobline { font-weight: 700; white-space: normal; overflow-wrap: break-word; display: block; }
 .jobline .no { font-weight: 700; color: var(--ink-dim); font-size: 11.5px; margin-right: 6px; }
 
 select, textarea, input[type=text], input[type=date] {
