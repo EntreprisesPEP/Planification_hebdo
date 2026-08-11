@@ -14,17 +14,17 @@ export default function Meeting1View({ board, editable, theme }) {
   return (
     <div className="panel">
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: 10 }}>
-        <h2 className="big-title">MEETING 1 - BESOINS</h2>
-        {editable && (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 8, alignItems: 'flex-end' }}>
-            <div className="weeknav">
-              <span>{fmtDateLong(weekStart)} - {fmtDateLong(weekEnd)}</span>
-              <input
-                type="date"
-                value={settings.notes_week_start || ''}
-                onChange={(e) => e.target.value && switchNotesWeek(dateKey(mondayOf(new Date(e.target.value + 'T00:00:00'))))}
-              />
-            </div>
+        <h2 className="big-title">SUIVI PROJETS</h2>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8, alignItems: 'flex-end' }}>
+          <div className="weeknav">
+            <span>{fmtDateLong(weekStart)} - {fmtDateLong(weekEnd)}</span>
+            <input
+              type="date"
+              value={settings.notes_week_start || ''}
+              onChange={(e) => e.target.value && switchNotesWeek(dateKey(mondayOf(new Date(e.target.value + 'T00:00:00'))))}
+            />
+          </div>
+          {editable && (
             <button
               className="btn ghost"
               onClick={async () => {
@@ -34,8 +34,8 @@ export default function Meeting1View({ board, editable, theme }) {
                   : `${n} projet(s) mis a jour avec les notes de la semaine precedente.`);
               }}
             >Importer la semaine precedente</button>
-          </div>
-        )}
+          )}
+        </div>
       </div>
 
       <ProjectsTable

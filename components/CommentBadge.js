@@ -40,7 +40,7 @@ export default function CommentBadge({ project, comments, onAdd, onDelete }) {
   const count = comments.length;
 
   return (
-    <span style={{ position: 'relative', display: 'inline-block', marginLeft: 6 }}>
+    <span style={{ position: 'relative', display: 'inline-block' }}>
       <span
         ref={btnRef}
         onClick={() => (open ? setOpen(false) : openPanel())}

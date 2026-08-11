@@ -28,7 +28,7 @@ export default function AdminView({ board, editable }) {
       <h2>Liste des projets</h2>
       <p className="desc">
         Section administrative : ajoute, corrige ou retire un projet ici. Ces changements
-        alimentent Meeting 1 et Meeting 2, ou les noms restent fixes.
+        alimentent Suivi projets et Meeting 2, ou les noms restent fixes.
       </p>
       <div className="scrollx">
         <table>

@@ -44,8 +44,9 @@ export default function ProjectsTable({ rows, editable, theme, onUpdate, board, 
     <div className="scrollx">
       <table className="projtable">
         <colgroup>
-          <col style={{ width: '15%' }} /><col style={{ width: '14%' }} /><col style={{ width: '38%' }} />
-          <col style={{ width: '6%' }} /><col style={{ width: '6%' }} /><col style={{ width: '9%' }} /><col style={{ width: '10%' }} />
+          <col style={{ width: '15%' }} /><col style={{ width: '14%' }} /><col style={{ width: '35%' }} />
+          <col style={{ width: '6%' }} /><col style={{ width: '6%' }} /><col style={{ width: '9%' }} />
+          <col style={{ width: '10%' }} /><col style={{ width: '5%' }} />
         </colgroup>
         <thead>
           <tr>
@@ -74,10 +75,11 @@ export default function ProjectsTable({ rows, editable, theme, onUpdate, board, 
                 onFilter={setFilterSurint}
               />
             </th>
+            <th />
           </tr>
         </thead>
         <tbody>
-          {visible.length === 0 && <tr><td colSpan={7} className="empty">{emptyLabel || 'Aucun projet.'}</td></tr>}
+          {visible.length === 0 && <tr><td colSpan={8} className="empty">{emptyLabel || 'Aucun projet.'}</td></tr>}
           {visible.map((p) => {
             const col = statusColor(p.statut, theme);
             const projComments = board.commentsFor(p.id);
@@ -87,12 +89,6 @@ export default function ProjectsTable({ rows, editable, theme, onUpdate, board, 
                   <span className="jobline" title={`${p.no} ${p.projet}`}>
                     <span className="no">{p.no}</span>{p.projet}
                   </span>
-                  <CommentBadge
-                    project={p}
-                    comments={projComments}
-                    onAdd={(body, author) => board.addComment(p.id, body, author)}
-                    onDelete={(id) => board.deleteComment(id)}
-                  />
                 </td>
                 <td>
                   <StatusCell project={p} editable={editable} onChange={(patch) => onUpdate(p.id, patch)} />
@@ -114,6 +110,14 @@ export default function ProjectsTable({ rows, editable, theme, onUpdate, board, 
                 </td>
                 <td>{p.charge}</td>
                 <td>{p.surintendant}</td>
+                <td style={{ textAlign: 'center' }}>
+                  <CommentBadge
+                    project={p}
+                    comments={projComments}
+                    onAdd={(body, author) => board.addComment(p.id, body, author)}
+                    onDelete={(id) => board.deleteComment(id)}
+                  />
+                </td>
               </tr>
             );
           })}
